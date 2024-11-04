@@ -1,3 +1,4 @@
+use itertools::sorted;
 use proconio::input;
 
 fn main() {
@@ -8,12 +9,19 @@ fn main() {
     x: [usize; q],
   }
 
-  let results = x
-    .iter()
-    .map(|j| a.iter().filter(|&i| j <= i).collect::<Vec<&usize>>().len())
-    .collect::<Vec<usize>>();
-
-  for r in results {
-    println!("{}", r)
+  let heights: Vec<usize> = sorted(a.clone()).collect();
+  for j in x.iter() {
+    let mut ok: isize = isize::try_from(n).unwrap();
+    let mut ng: isize = -1;
+    while (ok - ng) > 1 {
+      let md = (ok + ng) / 2;
+      let x = md as usize;
+      if j <= &heights[x] {
+        ok = md
+      } else {
+        ng = md
+      }
+    }
+    println!("{}", (n as isize) - ok)
   }
 }
